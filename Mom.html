@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 62nd Birthday Mom!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(45deg, #ff3300, #fcb69f, #6633cc, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card-container {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .birthday-card {
+            width: 450px;
+            height: 650px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            margin: 20px;
+        }
+
+        .card-container:hover .birthday-card {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffeaa7 100%);
+            color: #333;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .birthday-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .age-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ffeaa7;
+            margin: 10px 0;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ffeaa7, 0 0 20px #ffeaa7; }
+            to { text-shadow: 0 0 20px #ffeaa7, 0 0 30px #ffeaa7, 0 0 40px #ffeaa7; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .cat-hearts {
+            font-size: 2em;
+            margin: 15px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hint {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-top: 20px;
+            animation: pulse 2s infinite;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .photo-gallery {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .photo-frame {
+            width: 120px;
+            height: 120px;
+            border: 4px solid white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: transform 0.3s;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            color: #333;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .photo-upload {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .message {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #444;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .cat-decorations {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+
+        .floating-cat {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.6;
+            animation: catFloat 8s ease-in-out infinite;
+        }
+
+        .floating-cat:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-cat:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-cat:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        .floating-cat:nth-child(4) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 6s;
+        }
+
+        @keyframes catFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(-5deg); }
+            75% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        .interactive-button {
+            background: linear-gradient(45deg, #ff9a9e, #f33333);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: #333;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .interactive-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .wish-text {
+            font-size: 1em;
+            margin: 15px 0;
+            font-style: italic;
+            color: #555;
+            background: rgba(255,255,255,0.8);
+            padding: 10px 15px;
+            border-radius: 15px;
+        }
+
+        .mom-title {
+            font-size: 1.8em;
+            color: #33cc00;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            top: -10px;
+            animation: confetti-fall 4s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .photo-instructions {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .birthday-card {
+                width: 350px;
+                height: 580px;
+            }
+            
+            .birthday-title {
+                font-size: 2em;
+            }
+            
+            .age-number {
+                font-size: 3em;
+            }
+
+            .photo-frame {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cat-decorations">
+        <div class="floating-cat">🐱</div>
+        <div class="floating-cat">😸</div>
+        <div class="floating-cat">🐾</div>
+        <div class="floating-cat">😻</div>
+    </div>
+
+    <div class="card-container" id="cardContainer">
+        <div class="birthday-card">
+            <div class="card-front">
+                <h1 class="birthday-title">Happy Birthday</h1>
+                <h2 class="mom-title">Dear Mom!</h2>
+                <div class="age-number">62</div>
+                <div class="cat-hearts">🐱💖🐾💖🐱</div>
+                <p class="hint">Hover to see your special message!</p>
+            </div>
+            <div class="card-back">
+                <h2 class="mom-title">🎉 Happy 62nd Birthday! 🎉</h2>
+                
+                <p class="photo-instructions">Click the frames below to add your favorite photos!</p>
+                
+                <div class="photo-gallery">
+                    <div class="photo-frame" onclick="document.getElementById('photo1').click()">
+                        <input type="file" id="photo1" class="photo-upload" accept="image/*" onchange="loadPhoto(this, 0)">
+                        <span>Add Photo 1<br>📸</span>
+                    </div>
+                    <div class="photo-frame" onclick="document.getElementById('photo2').click()">
+                        <input type="file" id="photo2" class="photo-upload" accept="image/*" onchange="loadPhoto(this, 1)">
+                        <span>Add Photo 2<br>📸</span>
+                    </div>
+                </div>
+
+                <p class="message">
+                    To the most wonderful mom who fills our home with love and warmth! 
+                    Your kindness, wisdom, and caring heart inspire us every day. 
+                    May this special year bring you all the joy you bring to others, 
+                    along with lots of purrs and cuddles from your beloved cats! 🐱💕
+                </p>
+
+                <button class="interactive-button" onclick="createCatConfetti()">🎊 Celebrate with Cats!</button>
+                <button class="interactive-button" onclick="showCatWish()">🐾 Cat Birthday Wish</button>
+                <button class="interactive-button" onclick="playPurrSound()">😸 Purr for Mom</button>
+                
+                <p class="wish-text" id="wishText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const catWishes = [
+            "🐱 May your year be filled with as much joy as a cat with a sunny windowsill!",
+            "😻 Wishing you 62 wonderful moments, each as precious as a cat's purr!",
+            "🐾 Hope your birthday is purr-fect in every way, dear Mom!",
+            "😸 May you always have a warm lap and a happy cat nearby!",
+            "🐱💕 Another year of being absolutely claw-some, Mom!",
+            "🌟 You're the cat's meow, and we're lucky to be your family!"
+        ];
+
+        let photos = [];
+
+        function loadPhoto(input, index) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const frame = input.parentElement;
+                    frame.innerHTML = `<img src="${e.target.result}" alt="Family photo ${index + 1}">`;
+                    photos[index] = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function createCatConfetti() {
+            const catEmojis = ['🐱', '😸', '😻', '🐾', '💕', '🎉', '⭐', '💖'];
+            
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = 'transparent';
+                    confetti.style.fontSize = '20px';
+                    confetti.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 8000);
+                }, i * 75);
+            }
+            
+            showMessage("🎊 Celebrating the most wonderful cat-loving mom! 🎊");
+        }
+
+        function showCatWish() {
+            const wishText = document.getElementById('wishText');
+            const randomWish = catWishes[Math.floor(Math.random() * catWishes.length)];
+            showMessage(randomWish);
+        }
+
+        function playPurrSound() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.textContent = '😸 Purrrrrr...';
+            button.style.background = 'linear-gradient(45deg, #ffeaa7, #96ceb4)';
+            
+            // Simulate purring with text animation
+            let purrCount = 0;
+            const purrInterval = setInterval(() => {
+                button.textContent = purrCount % 2 === 0 ? '😸 Purrrrrr...' : '😸 Purrr...';
+                purrCount++;
+            }, 300);
+            
+            setTimeout(() => {
+                clearInterval(purrInterval);
+                button.textContent = originalText;
+                button.style.background = 'linear-gradient(45deg, #ff9a9e, #fecfef)';
+                showMessage('😻 Your cats are sending you birthday purrs, Mom! 😻');
+            }, 3000);
+        }
+
+        function showMessage(message) {
+            const wishText = document.getElementById('wishText');
+            wishText.textContent = message;
+            wishText.style.animation = 'none';
+            setTimeout(() => {
+                wishText.style.animation = 'fadeIn 1s ease-in';
+            }, 10);
+        }
+
+        // Mobile touch support
+        let cardContainer = document.getElementById('cardContainer');
+        let isFlipped = false;
+
+        cardContainer.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768 && !e.target.closest('.photo-frame') && !e.target.closest('.interactive-button')) {
+                isFlipped = !isFlipped;
+                if (isFlipped) {
+                    this.querySelector('.birthday-card').style.transform = 'rotateY(180deg)';
+                } else {
+                    this.querySelector('.birthday-card').style.transform = 'rotateY(0deg)';
+                }
+            }
+        });
+
+        // Auto-celebration on load
+        setTimeout(() => {
+            showMessage("🐱💕 Welcome to Mom's special birthday celebration! 💕🐱");
+        }, 2000);
+    </script>
+</body>
+</html>
